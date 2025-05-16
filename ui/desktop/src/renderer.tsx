@@ -9,6 +9,8 @@ import SuspenseLoader from './suspense-loader';
 
 patchConsoleLogging();
 
+document.title = (window.appConfig.get('GOOSE_DESKTOP_BRAND') as string) || 'Goose Desktop';
+
 const App = lazy(() => import('./App'));
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

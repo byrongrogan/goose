@@ -259,12 +259,20 @@ const getVersion = () => {
   return process.env.GOOSE_VERSION;
 };
 
+const getDesktopBrand = () => {
+  loadShellEnv(app.isPackaged);
+  return process.env.GOOSE_DESKTOP_BRAND || 'Goose Desktop';
+};
+
 let [provider, model] = getGooseProvider();
 console.log('[main] Got provider and model:', { provider, model });
 
 let sharingUrl = getSharingUrl();
 
 let gooseVersion = getVersion();
+
+let desktopBrand = getDesktopBrand();
+app.name = desktopBrand;
 
 let appConfig = {
   GOOSE_DEFAULT_PROVIDER: provider,
@@ -275,6 +283,7 @@ let appConfig = {
   // If GOOSE_ALLOWLIST_WARNING env var is not set, defaults to false (strict blocking mode)
   GOOSE_ALLOWLIST_WARNING: process.env.GOOSE_ALLOWLIST_WARNING === 'true',
   secretKey: generateSecretKey(),
+  GOOSE_DESKTOP_BRAND: desktopBrand,
 };
 
 console.log('[main] Created appConfig:', appConfig);
@@ -519,7 +528,7 @@ const createTray = () => {
     { label: 'Quit', click: () => app.quit() },
   ]);
 
-  tray.setToolTip('Goose');
+  tray.setToolTip(desktopBrand);
   tray.setContextMenu(contextMenu);
 
   // On Windows, clicking the tray icon should show the window
@@ -788,7 +797,7 @@ app.whenReady().then(async () => {
   const menu = Menu.getApplicationMenu();
 
   // App menu
-  const appMenu = menu?.items.find((item) => item.label === 'Goose');
+  const appMenu = menu?.items.find((item) => item.label === app.name);
   if (appMenu?.submenu) {
     // add Settings to app menu after About
     appMenu.submenu.insert(1, new MenuItem({ type: 'separator' }));
@@ -920,7 +929,7 @@ app.whenReady().then(async () => {
     // Add menu item to tell the user about the keyboard shortcut
     fileMenu.submenu.append(
       new MenuItem({
-        label: 'Focus Goose Window',
+        label: `Focus ${desktopBrand} Window`,
         accelerator: 'CmdOrCtrl+Alt+Shift+G',
         click() {
           focusWindow();
@@ -951,9 +960,9 @@ app.whenReady().then(async () => {
         helpMenu.submenu.append(new MenuItem({ type: 'separator' }));
       }
 
-      // Create the About Goose menu item with a submenu
+      // Create the About menu item with a submenu
       const aboutGooseMenuItem = new MenuItem({
-        label: 'About Goose',
+        label: `About ${desktopBrand}`,
         submenu: Menu.buildFromTemplate([]), // Start with an empty submenu for About
       });
 
@@ -1047,7 +1056,7 @@ app.whenReady().then(async () => {
     try {
       const response = await fetch(url, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; Goose/1.0)',
+          'User-Agent': `Mozilla/5.0 (compatible; ${desktopBrand}/1.0)`,
         },
       });
 

@@ -12,6 +12,10 @@ import type { ExtensionConfig, FixedExtensionEntry } from '../components/ConfigC
 import { toastService } from '../toasts';
 import { ExtensionQuery, addExtension as apiAddExtension } from '../api';
 
+const getDesktopBrand = (): string => {
+  return (window.appConfig?.get?.('GOOSE_DESKTOP_BRAND') as string) || 'Goose Desktop';
+};
+
 export interface Provider {
   id: string; // Lowercase key (e.g., "openai")
   name: string; // Provider name (e.g., "OpenAI")
@@ -21,7 +25,7 @@ export interface Provider {
 }
 
 // Desktop-specific system prompt extension
-const desktopPrompt = `You are being accessed through the Goose Desktop application.
+const desktopPrompt = () => `You are being accessed through the ${getDesktopBrand()} application.
 
 The user is interacting with you through a graphical user interface with the following features:
 - A chat interface where messages are displayed in a conversation format
@@ -38,8 +42,8 @@ Some extensions are builtin, such as Developer and Memory, while
 `;
 
 // Desktop-specific system prompt extension when a bot is in play
-const desktopPromptBot = `You are a helpful agent.
-You are being accessed through the Goose Desktop application, pre configured with instructions as requested by a human.
+const desktopPromptBot = () => `You are a helpful agent.
+You are being accessed through the ${getDesktopBrand()} application, pre configured with instructions as requested by a human.
 
 The user is interacting with you through a graphical user interface with the following features:
 - A chat interface where messages are displayed in a conversation format
@@ -150,8 +154,8 @@ export const initializeSystem = async (
       },
       body: JSON.stringify({
         extension: botPrompt
-          ? `${desktopPromptBot}\nIMPORTANT instructions for you to operate as agent:\n${botPrompt}`
-          : desktopPrompt,
+          ? `${desktopPromptBot()}\nIMPORTANT instructions for you to operate as agent:\n${botPrompt}`
+          : desktopPrompt(),
       }),
     });
 

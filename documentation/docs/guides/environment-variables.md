@@ -111,6 +111,14 @@ These variables configure the [Langfuse integration for observability](/docs/tut
 | `LANGFUSE_INIT_PROJECT_PUBLIC_KEY` | Alternative public key for Langfuse | String | None |
 | `LANGFUSE_INIT_PROJECT_SECRET_KEY` | Alternative secret key for Langfuse | String | None |
 
+## Desktop UI
+
+These variables customize aspects of the desktop application.
+
+| Variable | Purpose | Values | Default |
+|----------|---------|--------|---------|
+| `GOOSE_DESKTOP_BRAND` | Name shown in the desktop UI | Any string | "Goose Desktop" |
+
 
 ## Notes
 
