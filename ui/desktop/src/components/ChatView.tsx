@@ -160,7 +160,7 @@ function ChatContent({
       if (timeSinceLastInteraction > 60000) {
         // 60000ms = 1 minute
         window.electron.showNotification({
-          title: 'Goose finished the task.',
+          title: `${window.appConfig.get('GOOSE_DESKTOP_BRAND') || 'Goose'} finished the task.`,
           body: 'Click here to expand.',
         });
       }
@@ -566,7 +566,8 @@ function ChatContent({
             {error && (
               <div className="flex flex-col items-center justify-center p-4">
                 <div className="text-red-700 dark:text-red-300 bg-red-400/50 p-3 rounded-lg mb-2">
-                  {error.message || 'Honk! Goose experienced an error while responding'}
+                  {error.message ||
+                    `Honk! ${window.appConfig.get('GOOSE_DESKTOP_BRAND') || 'Goose'} experienced an error while responding`}
                 </div>
                 <div
                   className="px-3 py-2 mt-2 text-center whitespace-nowrap cursor-pointer text-textStandard border border-borderSubtle hover:bg-bgSubtle rounded-full inline-block transition-all duration-150"

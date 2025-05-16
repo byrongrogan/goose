@@ -58,15 +58,15 @@ module.exports = {
     {
       name: '@electron-forge/maker-deb',
       config: {
-        name: 'Goose',
-        bin: 'Goose'
+        name: process.env.GOOSE_DESKTOP_BRAND || 'Goose',
+        bin: process.env.GOOSE_DESKTOP_BRAND || 'Goose'
       },
     },
     {
       name: '@electron-forge/maker-rpm',
       config: {
-        name: 'Goose',
-        bin: 'Goose'
+        name: process.env.GOOSE_DESKTOP_BRAND || 'Goose',
+        bin: process.env.GOOSE_DESKTOP_BRAND || 'Goose'
       },
     },
   ],

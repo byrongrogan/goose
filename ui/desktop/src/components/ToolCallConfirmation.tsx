@@ -64,7 +64,8 @@ export default function ToolConfirmation({
   ) : (
     <>
       <div className="goose-message-content bg-bgSubtle rounded-2xl px-4 py-2 rounded-b-none text-textStandard">
-        Goose would like to call the above tool. Allow?
+        {window.appConfig.get('GOOSE_DESKTOP_BRAND') || 'Goose'} would like to call the above tool.
+        Allow?
       </div>
       {clicked ? (
         <div className="goose-message-tool bg-bgApp border border-borderSubtle dark:border-gray-700 rounded-b-2xl px-4 pt-2 pb-2 flex items-center justify-between">

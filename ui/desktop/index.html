@@ -2,7 +2,21 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Goose</title>
+    <title id="app-title">Goose</title>
+    <script>
+      // Update the title based on branding from appConfig
+      window.addEventListener('DOMContentLoaded', () => {
+        try {
+          const config = window.electron?.getConfig();
+          if (config && config.GOOSE_DESKTOP_BRAND) {
+            document.getElementById('app-title').textContent = config.GOOSE_DESKTOP_BRAND;
+            document.title = config.GOOSE_DESKTOP_BRAND;
+          }
+        } catch (e) {
+          console.error('Failed to set app title:', e);
+        }
+      });
+    </script>
     <script>
       // Initialize theme before any content loads
       (function() {

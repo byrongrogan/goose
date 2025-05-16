@@ -266,6 +266,14 @@ let sharingUrl = getSharingUrl();
 
 let gooseVersion = getVersion();
 
+// Get branding for app (defaults to "Goose" if not set)
+const getAppBranding = () => {
+  loadShellEnv(app.isPackaged);
+  return process.env.GOOSE_DESKTOP_BRAND || 'Goose';
+};
+
+const appBranding = getAppBranding();
+
 let appConfig = {
   GOOSE_DEFAULT_PROVIDER: provider,
   GOOSE_DEFAULT_MODEL: model,
@@ -274,6 +282,7 @@ let appConfig = {
   GOOSE_WORKING_DIR: '',
   // If GOOSE_ALLOWLIST_WARNING env var is not set, defaults to false (strict blocking mode)
   GOOSE_ALLOWLIST_WARNING: process.env.GOOSE_ALLOWLIST_WARNING === 'true',
+  GOOSE_DESKTOP_BRAND: appBranding,
   secretKey: generateSecretKey(),
 };
 
@@ -519,7 +528,7 @@ const createTray = () => {
     { label: 'Quit', click: () => app.quit() },
   ]);
 
-  tray.setToolTip('Goose');
+  tray.setToolTip(appBranding);
   tray.setContextMenu(contextMenu);
 
   // On Windows, clicking the tray icon should show the window
@@ -788,7 +797,7 @@ app.whenReady().then(async () => {
   const menu = Menu.getApplicationMenu();
 
   // App menu
-  const appMenu = menu?.items.find((item) => item.label === 'Goose');
+  const appMenu = menu?.items.find((item) => item.label === 'Goose' || item.label === appBranding);
   if (appMenu?.submenu) {
     // add Settings to app menu after About
     appMenu.submenu.insert(1, new MenuItem({ type: 'separator' }));
@@ -951,9 +960,9 @@ app.whenReady().then(async () => {
         helpMenu.submenu.append(new MenuItem({ type: 'separator' }));
       }
 
-      // Create the About Goose menu item with a submenu
+      // Create the About menu item with a submenu
       const aboutGooseMenuItem = new MenuItem({
-        label: 'About Goose',
+        label: `About ${appBranding}`,
         submenu: Menu.buildFromTemplate([]), // Start with an empty submenu for About
       });
 
